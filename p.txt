@@ -1,0 +1,83 @@
+type nul>filename 创建空文件
+
+
+设置镜像
+1.临时使用
+npm --registry https://registry.npm.taobao.org install express
+2.持久使用
+npm config set registry https://registry.npm.taobao.org
+// 配置后可通过下面方式来验证是否成功
+npm config get registry
+// 或
+npm info express
+
+
+$ npm init // 生成项目依赖文件配置 package.json
+$ npm install webpack -g // 全局安装webpack
+
+通常我们会将 Webpack 安装到项目的依赖中，这样就可以使用项目本地版本的 Webpack
+$ npm install webpack --save-dev
+
+#查看 webpack 版本信息
+$ npm info webpack
+# 安装指定版本的 webpack
+$ npm install webpack@1.12.x --save-dev
+如果需要使用 Webpack 开发工具，要单独安装：
+$ npm install webpack-dev-server --save-dev
+
+#编译并打包
+$ webpack src dst
+
+
+/*Loader*/
+npm install css-loader style-loader
++--save-dev参数可以自动配置到package.json中
+
+require("!style!css!./style.css") // 载入 style.css
+或者
+require("./style.css");
+++++
+$ webpack entry.js bundle.js --module-bind "css=style!css"
+
+可以使用插件:
+$ touch webpack.config.js // 在项目根目录下，新建 webpack.config.js 文件//window 下用其它指令如:type nul>
+$ webpack
+$ webpack -display-error-details
+
+插件plugin:...
+
+
+//
+
+颜色
+$ webpack --progress --colors
+自动编译
+$ webpack -watch
+
+
+//用 webpack-dev-server 实现：自动编译 + 浏览器同步刷新
+$ npm i webpack-dev-server -D
+
+运行时，它会启动一个本地 Node 服务器，默认端口8080. 即：localhost:8080. 并且自动识别当前目录下的 webpack.config.js 文件来作为 webpack 配置文件。
+产出的编译后文件，不在 output.path 里，而在它自己定义的内存。
+行内参数说明：
+inline: 使用命令行模式。
+content-base: 指定网站的根地址，如果你想指定为项目根目录，那么 --content-base ./
+hot: 开启热替换。一般用在 React 和 Vue 当中，我们这里不用。
+
+启动:
+$ webpack-dev-server --inline --content-base ./
+然后，你在浏览器中，访问 http://localhost:8080/views_dev/index.html 就会发现，你修改代码的时候，实时编译，并且浏览器同步刷新了。
+（不过，要补充一下，触发 webpack 重新编译时，才能同步刷新浏览器。意味着，你修改 views_dev/*.html 的 HTML 文件时，浏览器，不会被刷新，因为它不会触发 webpack 重新编译。）
+
+//单独打包CSS
+$ npm install extract-text-webpack-plugin --save-dev
+单独引入css
+//
+压缩发布
+webpack -p --config webpack.config.build.js
+
+/**/
+https://segmentfault.com/a/1190000006649986
+http://zhaoda.net/webpack-handbook/plugin.html
+
