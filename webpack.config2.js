@@ -4,10 +4,6 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-var path = require("path");
-var root = path.resolve(__dirname);
-var src = path.resolve(root, "./src");
-
 var commonsChunkPlugin = new webpack.optimize.CommonsChunkPlugin({
     name: 'commons', // 这公共代码的chunk名为'commons'
     filename: 'js/[name].js', // 生成后的文件名，虽说用了[name]，但实际上就是'commons.bundle.js'了
@@ -18,9 +14,8 @@ var commonsChunkPlugin = new webpack.optimize.CommonsChunkPlugin({
 
 module.exports = {
     entry: {
-        // main: './src/js/main.js',
-        // test: './src/js/test.js',
-        module: './src/js/module.js'
+        main: './src/js/main.js',
+        test: './src/js/test.js'
     },
     output: {
         path: './dist',
@@ -41,11 +36,6 @@ module.exports = {
                 test: /\.(png|jpg|gif)$/,
                 // loader: 'url?limit=8192&name=./static/img/[hash].[ext]'
                 loader: "file-loader?name=.img/[name].[ext]"
-            },
-            {
-                test: /\.ejs$/,
-                // loader: 'ejs',//wrong
-                loader: 'ejs-loader'
             }
         ]
     },
@@ -58,11 +48,23 @@ module.exports = {
         //commons 模块
         commonsChunkPlugin,
         new HtmlWebpackPlugin({
-            title: "layout",
-            filename: "html/layout.html",
-            chunks: [],
-            template: "./src/js/module.js",//指定为一个js文件而非普通的模板文件
-            inject: true,
+            // body: "hello",
+            title: "first",
+            filename: "html/first.html",
+            chunks: ["main"],
+            // template: "./src/template.ejs",
+            inject: "body",//true
+            hash: false,
+            showErrors: true,
+            // minify: "htmlMinifier",//true,
+            xhtml: true
+        }),
+        new HtmlWebpackPlugin({
+            title: "template",
+            filename: "html/template.html",
+            chunks: ["main"],
+            template: "./src/html/template.html",
+            inject: "body",//true
             hash: false,
             showErrors: true,
             // minify: "htmlMinifier",//true,
@@ -72,3 +74,15 @@ module.exports = {
     ]
 };
 
+// module.exports = {
+//     entry: './src/temp.js',
+//     output: {
+//         path: 'dest',
+//         filename: 'a.js'
+//     },
+//     plugins: [new hp({
+//         title: 'index',
+//         filename: 'a.html',
+//         template: ''
+//     })]
+// };
